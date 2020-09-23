@@ -1,0 +1,6 @@
+configMapGenerator:
+- name: configmap-from-generator
+  files:
+  - env-file.properties
+generatorOptions:
+  disableNameSuffixHash: true

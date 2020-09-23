@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres
+data:
+  POSTGRES_DB: "deeptalk"
+  POSTGRES_HOST: "postgres-server"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "deeptalk123"
+  PGPASSWORD: "deeptalk123"

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres-server
+  name: postgres-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-server
+  template:
+    metadata:
+      labels:
+        app: postgres-server
+    spec:
+      containers:
+      - image: postgres:latest
+        name: postgres-server
+        env:
+          - name: POSTGRES_DB
+            value: "deeptalk"
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "deeptalk123"
+
+#        envFrom:
+#          - configMapRef:
+#              name: postgres
+#          - secretRef:
+#              name: postgres

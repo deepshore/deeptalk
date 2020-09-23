@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - image: grafana/grafana:7.0.3
+        name: grafana
+        envFrom:
+          - secretRef:
+              name: grafana
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources/datasource.yml
+          name: grafana
+          readOnly: true
+          subPath: datasource.yml
+        - mountPath: /etc/grafana/provisioning/dashboards/dashboard-providers.yml
+          name: grafana
+          readOnly: true
+          subPath: dashboard-providers.yml
+        - mountPath: /var/lib/grafana/dashboards/dashboard.json
+          name: grafana
+          readOnly: true
+          subPath: dashboard.json
+      volumes:
+        - configMap:
+            name: grafana
+          name: grafana

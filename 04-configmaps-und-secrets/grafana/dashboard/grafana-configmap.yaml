@@ -1,0 +1,306 @@
+apiVersion: v1
+data:
+  dashboard-providers.yml: |-
+    apiVersion: 1
+
+    providers:
+      # <string> an unique provider name. Required
+      - name: 'a unique provider name'
+        # <int> Org id. Default to 1
+        orgId: 1
+        # <string> name of the dashboard folder.
+        folder: ''
+        # <string> folder UID. will be automatically generated if not specified
+        folderUid: ''
+        # <string> provider type. Default to 'file'
+        type: file
+        # <bool> disable dashboard deletion
+        disableDeletion: false
+        # <bool> enable dashboard editing
+        editable: true
+        # <int> how often Grafana will scan for changed dashboards
+        updateIntervalSeconds: 10
+        # <bool> allow updating provisioned dashboards from the UI
+        allowUiUpdates: false
+        options:
+          # <string, required> path to dashboard files on disk. Required when using the 'file' type
+          path: /var/lib/grafana/dashboards
+  dashboard.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [
+        {
+          "datasource": "Postgres",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": null,
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 10,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "showHeader": true
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  *\nFROM\n  listeners",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Listeners",
+          "type": "table"
+        },
+        {
+          "datasource": "Postgres",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "orange",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 10,
+            "x": 10,
+            "y": 0
+          },
+          "id": 6,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            }
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  now() as \"time\",\n  min(age) as \"min\",\n  max(age) as \"max\",\n  avg(age) as \"avg\"\nFROM\n  listeners\n",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Stats about Ages",
+          "type": "stat"
+        },
+        {
+          "datasource": "Postgres",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": null
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 45
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 20,
+            "x": 0,
+            "y": 10
+          },
+          "id": 4,
+          "options": {
+            "displayMode": "lcd",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  now() as \"time\",\n  name as \"metric\",\n  age as \"value\"\nFROM\n  listeners\n",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Age of Listeners",
+          "type": "bargauge"
+        }
+      ],
+      "schemaVersion": 25,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ]
+      },
+      "timezone": "",
+      "title": "Deeptalk",
+      "uid": "kZEElhOMk",
+      "version": 1
+    }
+  datasource.yml: |-
+    apiVersion: 1
+    datasources:
+      - name: Postgres
+        type: postgres
+        url: postgres-server:5432
+        database: deeptalk
+        user: postgres
+        secureJsonData:
+          password: "deeptalk123"
+        jsonData:
+          sslmode: "disable"
+
+kind: ConfigMap
+metadata:
+  name: grafana
