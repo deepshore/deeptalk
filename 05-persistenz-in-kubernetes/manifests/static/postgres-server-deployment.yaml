@@ -17,16 +17,15 @@ spec:
       containers:
       - image: postgres:latest
         name: postgres-server
-        env:
-          - name: POSTGRES_DB
-            value: "deeptalk"
-          - name: POSTGRES_USER
-            value: "postgres"
-          - name: POSTGRES_PASSWORD
-            value: "deeptalk123"
-
-#        envFrom:
-#          - configMapRef:
-#              name: postgres
-#          - secretRef:
-#              name: postgres
+        envFrom:
+          - configMapRef:
+              name: postgres
+          - secretRef:
+              name: postgres
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres
