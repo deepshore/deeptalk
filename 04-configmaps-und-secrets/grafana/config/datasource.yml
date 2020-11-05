@@ -2,9 +2,9 @@ apiVersion: 1
 datasources:
   - name: Postgres
     type: static
-    url: static-server:5432
+    url: postgres-server:5432
     database: deeptalk
-    user: static
+    user: postgres
     secureJsonData:
       password: "deeptalk123"
     jsonData:
