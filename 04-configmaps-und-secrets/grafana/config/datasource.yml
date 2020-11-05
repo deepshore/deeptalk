@@ -1,7 +1,7 @@
 apiVersion: 1
 datasources:
   - name: Postgres
-    type: static
+    type: postgres
     url: postgres-server:5432
     database: deeptalk
     user: postgres
